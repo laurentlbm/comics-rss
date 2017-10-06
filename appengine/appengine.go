@@ -1,30 +1,34 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
-	"github.com/daniellowtw/explosm-rss/explosm"
+	"github.com/laurentlbm/feeds/feed"
 )
 
 var timeoutDuration = time.Hour
 
 func init() {
-	e := explosm.Explosm{
-		RefreshInterval: time.Hour,
+	for comic, transform := range feed.Feeds {
+		transformFeed(comic, transform)
 	}
+}
+
+func transformFeed(comicURL string, transform feed.Transform) {
 	var lastUpdated time.Time
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc(fmt.Sprintf("/%s/", comicURL), func(w http.ResponseWriter, r *http.Request) {
 		// This is a hack because it seems like I can't do polling in the background without a user generated request
 		if time.Now().Sub(lastUpdated) > timeoutDuration {
-			e.Do(r)
+			transform.Do(r)
 			lastUpdated = time.Now()
 		}
 		w.Header().Add("content-type", "text/xml")
-		w.Write([]byte(e.Generate()))
+		w.Write([]byte(transform.Generate()))
 	})
-	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc(fmt.Sprintf("/%s/favicon.ico", comicURL), func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("content-type", "image/png")
-		w.Write(explosm.Icon96)
+		w.Write(transform.GetFavicon(r))
 	})
 }

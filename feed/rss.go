@@ -1,4 +1,4 @@
-package explosm
+package feed
 
 import "encoding/xml"
 
@@ -9,17 +9,17 @@ func generate(v interface{}) string {
 </rss>`
 }
 
-type CDataTest struct {
+type CData struct {
 	Chardata string `xml:",cdata"`
 }
 
 type Item struct {
-	Title       string    `xml:"title"`
-	Link        string    `xml:"link"`
-	Description CDataTest `xml:"description"`
-	Category    []string  `xml:"category"`
-	Guid        string    `xml:"guid"`
-	PubDate     string    `xml:"pubDate"`
+	Title       string   `xml:"title"`
+	Link        string   `xml:"link"`
+	Description CData    `xml:"description"`
+	Category    []string `xml:"category"`
+	Guid        string   `xml:"guid"`
+	PubDate     string   `xml:"pubDate"`
 }
 
 type channel struct {
