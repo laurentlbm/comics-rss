@@ -19,8 +19,8 @@ func init() {
 func transformFeed(comicURL string, transform feed.Transform) {
 	var lastUpdated time.Time
 	http.HandleFunc(fmt.Sprintf("/%s/", comicURL), func(w http.ResponseWriter, r *http.Request) {
-		// This is a hack because it seems like I can't do polling in the background without a user generated request
-		if time.Now().Sub(lastUpdated) > timeoutDuration {
+		// This is a hack because it seems like I can't do polling in the background without a user-generated request
+		if time.Now().Sub(lastUpdated) > transform.RefreshInterval {
 			transform.Do(r)
 			lastUpdated = time.Now()
 		}

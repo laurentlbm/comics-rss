@@ -127,9 +127,9 @@ func isValidUrl(toTest string) bool {
 	_, err := url.ParseRequestURI(toTest)
 	if err != nil {
 		return false
-	} else {
-		return true
 	}
+
+	return true
 }
 
 func (t *Transform) GetFavicon(r *http.Request) []byte {
