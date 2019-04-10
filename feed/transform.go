@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/mmcdole/gofeed"
@@ -54,18 +55,21 @@ func (t *Transform) Do(r *http.Request) error {
 		if err != nil {
 			safeLog(r, "%s", err)
 		}
-		imgEle := findHTML(data, t.ImageRegexp)
-		if imgEle == "" {
+		image := findMatch(data, t.ImageRegexp)
+		if image == "" {
 			safeLog(r, "cannot find image. Data is: %s", t.data)
 		}
-		if isValidUrl(imgEle) {
-			imgEle = fmt.Sprintf("<img alt=\"\" src=\"%s\" />", imgEle)
+		if isValidURL(image) {
+			if strings.HasPrefix(image, "//") {
+				image = "https:" + image
+			}
+			image = fmt.Sprintf("<img alt=\"\" src=\"%s\" />", image)
 		}
-		extraElements := findHTML(data, t.ExtraRegexp)
+		extraElements := findMatch(data, t.ExtraRegexp)
 		is = append(is, Item{
 			Title:       i.Title,
 			Link:        lastURLQuery,
-			Description: CData{fmt.Sprintf("%s %s", imgEle, extraElements)},
+			Description: CData{fmt.Sprintf("%s %s", image, extraElements)},
 			Category:    i.Categories,
 			Guid:        i.GUID,
 			PubDate:     i.Published,
@@ -112,18 +116,18 @@ func getDataFromNet(url string, r *http.Request) ([]byte, string, error) {
 	return data, lastURLQuery, nil
 }
 
-func findHTML(data []byte, htmlRegexp *regexp.Regexp) string {
-	if htmlRegexp == nil {
+func findMatch(data []byte, matchRegexp *regexp.Regexp) string {
+	if matchRegexp == nil {
 		return ""
 	}
-	matches := htmlRegexp.FindSubmatch(data)
+	matches := matchRegexp.FindSubmatch(data)
 	if len(matches) > 1 {
 		return string(matches[1])
 	}
 	return ""
 }
 
-func isValidUrl(toTest string) bool {
+func isValidURL(toTest string) bool {
 	_, err := url.ParseRequestURI(toTest)
 	if err != nil {
 		return false

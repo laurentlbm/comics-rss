@@ -3,6 +3,7 @@
 *.dll
 *.so
 *.dylib
+comics-rss
 
 # Test binary, build with `go test -c`
 *.test
