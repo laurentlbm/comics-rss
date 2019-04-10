@@ -23,5 +23,12 @@ var (
 			ExtraRegexp:     nil,
 			RefreshInterval: *RefreshInterval,
 		},
+		"explosm": Transform{
+			FeedURL: "http://feeds.feedburner.com/Explosm",
+			FaviconURL:  "https://www.google.com/s2/favicons?domain=explosm.com",
+			ImageRegexp:     regexp.MustCompile(`(?s)<div id="comic-wrap">(.*?)</div>`),
+			ExtraRegexp:     nil,
+			RefreshInterval: *RefreshInterval,
+		},
 	}
 )
