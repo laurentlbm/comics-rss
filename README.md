@@ -1,12 +1,12 @@
-# explosm-rss
+# comics-rss
 
-The missing image rss feed for `https://explosm.net`. This service downloads the rss feed from explosm.net and replaces the description of the content with the image instead of a link.
+The missing image rss feed for `https://explosm.net`, `https://www.buttersafe.com` and `https://www.fowllanguagecomics.com`. This service downloads the rss feed and replaces the description of the content with the image instead of a link.
 
-Add <https://explosm-1311.appspot.com> to your rss news feed now!
+Forked from `https://github.com/daniellowtw/explosm-rss`
 
 ## Installation
 
-`go get github.com/daniellowtw/explosm-rss`
+`go get github.com/laurentlbm/comics-rss`
 
 ### On appengine
 
@@ -18,21 +18,22 @@ To use with `AppEngine`:
 * Clone this repo inside that directory
 * Download the [Go SDK](https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Go) and run `goapp serve` to make sure it is working
 * Upload it with `appcfg.py`
-** `python appcfg.py update "<path-to-appengine-folder>" -A explosm-1311 -V <version-number>``
+** `python appcfg.py update "<path-to-appengine-folder>" -A <app-name> -V <version-number>``
 
 ## Usage
 
 ```
-go install
-./explosm-rss
+go get .
+go build
+./comics-rss
 ```
 
-Go to `http://localhost:20480`
+Go to `http://localhost:20480/buttersafe`
 
 ### Configuration
 
 * `port` - the port that the server is listening on
-* `refresh_interval` - how often to poll the actual feed from `explosm.net`
+* `refresh_interval` - how often to poll the actual feeds
 
 ## License
 
