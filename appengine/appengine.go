@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/laurentlbm/feeds/feed"
+	"github.com/laurentlbm/comics-rss/feed"
 )
 
 var timeoutDuration = time.Hour

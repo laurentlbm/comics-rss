@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/laurentlbm/feeds/feed"
+	"github.com/laurentlbm/comics-rss/feed"
 )
 
 func main() {
